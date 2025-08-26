@@ -63,7 +63,7 @@ const ThankYou: React.FC = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.7, duration: 0.6 }}
         >
-          شكراً لك على تسجيلك في دورات English Ways!
+          شكراً لك على تسجيلك في دورات English Way!
         </motion.p>
 
         {/* Success Message */}
@@ -121,7 +121,7 @@ const ThankYou: React.FC = () => {
             ))}
             <span className="text-lg font-semibold text-gray-700 mr-2">4.9/5</span>
           </div>
-          <p className="text-gray-600">أكثر من 10,000 طالب راضي عن خدماتنا</p>
+          <p className="text-gray-600">أكثر من 1,200 طالب راضي عن خدماتنا</p>
         </motion.div>
 
         {/* CTA Buttons */}
@@ -156,7 +156,7 @@ const ThankYou: React.FC = () => {
           animate={{ opacity: 1 }}
           transition={{ delay: 1.5, duration: 0.6 }}
         >
-          English Ways - تعلّم الإنجليزية بالطريقة الصحيحة
+          English Way - تعلّم الإنجليزية بالطريقة الصحيحة
         </motion.p>
       </motion.div>
 
