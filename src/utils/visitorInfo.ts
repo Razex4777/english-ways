@@ -131,17 +131,17 @@ const getDeviceInfo = (): { deviceType: string; isMobile: boolean; isTablet: boo
 // Get IP and location information
 const getIPInfo = async (): Promise<{ ip: string; location: any }> => {
   try {
-    // Try multiple free IP geolocation services
+    // Try multiple free IP geolocation services (all HTTPS)
     const services = [
-      'http://ip-api.com/json/',
       'https://ipapi.co/json/',
-      'https://api.ipify.org?format=json'
+      'https://api.ipify.org?format=json',
+      'https://httpbin.org/ip'
     ];
 
     let ipData = null;
     let locationData = null;
 
-    // Try the first service (ip-api.com - most comprehensive)
+    // Try the first service (ipapi.co - comprehensive with HTTPS)
     try {
       const response = await fetch(services[0], {
         method: 'GET',
@@ -152,22 +152,22 @@ const getIPInfo = async (): Promise<{ ip: string; location: any }> => {
 
       if (response.ok) {
         const data = await response.json();
-        ipData = data.query || data.ip;
+        ipData = data.ip;
         locationData = {
-          country: data.country || 'Unknown',
-          region: data.regionName || data.region || 'Unknown',
+          country: data.country_name || data.country || 'Unknown',
+          region: data.region || 'Unknown',
           city: data.city || 'Unknown',
-          lat: data.lat?.toString() || '0',
-          lon: data.lon?.toString() || '0',
+          lat: data.latitude?.toString() || '0',
+          lon: data.longitude?.toString() || '0',
           timezone: data.timezone || 'Unknown',
-          isp: data.isp || data.org || 'Unknown'
+          isp: data.org || 'Unknown'
         };
       }
     } catch (error) {
       console.log('First IP service failed, trying backup...');
     }
 
-    // If first service failed, try ipapi.co
+    // If first service failed, try ipify.org (IP only)
     if (!ipData) {
       try {
         const response = await fetch(services[1], {
@@ -181,27 +181,27 @@ const getIPInfo = async (): Promise<{ ip: string; location: any }> => {
           const data = await response.json();
           ipData = data.ip;
           locationData = {
-            country: data.country_name || data.country || 'Unknown',
-            region: data.region || 'Unknown',
-            city: data.city || 'Unknown',
-            lat: data.latitude?.toString() || '0',
-            lon: data.longitude?.toString() || '0',
-            timezone: data.timezone || 'Unknown',
-            isp: data.org || 'Unknown'
+            country: 'Unknown',
+            region: 'Unknown',
+            city: 'Unknown',
+            lat: '0',
+            lon: '0',
+            timezone: 'Unknown',
+            isp: 'Unknown'
           };
         }
       } catch (error) {
-        console.log('Second IP service failed, using basic IP...');
+        console.log('Second IP service failed, trying final backup...');
       }
     }
 
-    // If all else fails, get basic IP
+    // If all else fails, try httpbin.org
     if (!ipData) {
       try {
         const response = await fetch(services[2]);
         if (response.ok) {
           const data = await response.json();
-          ipData = data.ip;
+          ipData = data.origin; // httpbin.org returns IP in 'origin' field
           locationData = {
             country: 'Unknown',
             region: 'Unknown',
