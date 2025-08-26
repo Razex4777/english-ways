@@ -60,7 +60,7 @@ const FloatingCTA = () => {
               </motion.button>
             </div>
 
-            <p className="text-gray-600 mb-6 text-right leading-relaxed">
+            <p className="text-gray-600 mb-6 text-center leading-relaxed">
               جاهز لبدء رحلة إتقان الإنجليزية؟ تواصل معنا فوراً
             </p>
 
@@ -92,38 +92,51 @@ const FloatingCTA = () => {
             </div>
           </motion.div>
         ) : (
-          <motion.button
-            className="relative bg-gradient-to-br from-primary to-purple-600 text-white w-16 h-16 rounded-full shadow-2xl hover:shadow-3xl transition-all duration-300 flex items-center justify-center group overflow-hidden"
-            onClick={() => setIsExpanded(true)}
-            whileHover={{
-              scale: 1.1,
-              rotate: 5,
-              boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.25)"
-            }}
-            whileTap={{ scale: 0.95 }}
-            animate={{
-              y: [0, -5, 0],
-              transition: {
-                duration: 2,
+          <div className="relative">
+            <motion.button
+              className="relative bg-gradient-to-br from-primary to-purple-600 text-white w-16 h-16 rounded-full shadow-2xl hover:shadow-3xl transition-all duration-300 flex items-center justify-center group overflow-hidden"
+              onClick={() => setIsExpanded(true)}
+              whileHover={{
+                scale: 1.1,
+                rotate: 5,
+                boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.25)"
+              }}
+              whileTap={{ scale: 0.95 }}
+              animate={{
+                y: [0, -5, 0],
+                transition: {
+                  duration: 2,
+                  repeat: Infinity,
+                  ease: "easeInOut"
+                }
+              }}
+            >
+              {/* Pulse animation */}
+              <div className="absolute inset-0 rounded-full bg-primary animate-ping opacity-20"></div>
+              
+              {/* Gradient overlay on hover */}
+              <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 -skew-x-12 group-hover:translate-x-full transition-transform duration-1000"></div>
+              
+              {/* Icon */}
+              <WhatsAppIcon className="w-7 h-7 relative z-10 group-hover:rotate-12 transition-transform duration-300" />
+            </motion.button>
+            
+            {/* Online indicator - moved above the icon */}
+            <motion.div 
+              className="absolute -top-2 left-1/2 transform -translate-x-1/2 w-5 h-5 bg-red-500 rounded-full border-2 border-white shadow-lg flex items-center justify-center"
+              animate={{ 
+                scale: [1, 1.2, 1],
+                opacity: [0.8, 1, 0.8]
+              }}
+              transition={{ 
+                duration: 2, 
                 repeat: Infinity,
                 ease: "easeInOut"
-              }
-            }}
-          >
-            {/* Pulse animation */}
-            <div className="absolute inset-0 rounded-full bg-primary animate-ping opacity-20"></div>
-            
-            {/* Gradient overlay on hover */}
-            <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 -skew-x-12 group-hover:translate-x-full transition-transform duration-1000"></div>
-            
-            {/* Icon */}
-            <MessageCircle className="w-7 h-7 relative z-10 group-hover:rotate-12 transition-transform duration-300" />
-            
-            {/* Online indicator */}
-            <div className="absolute top-1 right-1 w-4 h-4 bg-green-400 rounded-full border-2 border-white shadow-sm">
-              <div className="w-full h-full bg-green-500 rounded-full animate-pulse"></div>
-            </div>
-          </motion.button>
+              }}
+            >
+              <div className="w-2 h-2 bg-white rounded-full"></div>
+            </motion.div>
+          </div>
         )}
       </AnimatePresence>
     </motion.div>

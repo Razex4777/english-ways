@@ -6,32 +6,32 @@ const Testimonials = () => {
   const testimonials = [
     {
       name: 'ندى',
-      role: 'موظفة تسويق',
+      role: 'ممرضة',
       company: '26 سنة',
-      image: 'https://images.pexels.com/photos/3184298/pexels-photo-3184298.jpeg?auto=compress&cs=tinysrgb&w=400',
+      image: '/nada.jpg',
       metric: '100%',
       metricLabel: 'ثقة في العروض',
-      quote: 'بعد شهرين، قدّمت بريزنتيشن كامل بالإنجليزي قدام مديري، وانبهر فيّي.',
+      quote: 'بعد شهرين، قّدمت بريزنتيشن كامل باإنجليزي قّدام مديري، وانبهر فيّي.',
       improvement: '+300% ثقة في التقديم'
     },
     {
       name: 'سامر',
-      role: 'رائد أعمال',
+      role: 'مهندس',
       company: '34 سنة',
-      image: 'https://images.pexels.com/photos/3184292/pexels-photo-3184292.jpeg?auto=compress&cs=tinysrgb&w=400',
+      image: '/samer.jpg',
       metric: '+400%',
       metricLabel: 'نجاح المفاوضات',
-      quote: 'رحلتي لتركيا كانت غير... أول مرة قدرت أتعامل بثقة!',
+      quote: 'رحلتي لتركيا كانت غير... ألول مرة قدرت أتعامل بثقة!',
       improvement: 'رحلة ناجحة بلا توتر'
     },
     {
       name: 'أحمد',
       role: 'مدير مبيعات',
       company: '32 سنة',
-      image: 'https://images.pexels.com/photos/3184296/pexels-photo-3184296.jpeg?auto=compress&cs=tinysrgb&w=400',
+      image: '/ahmed.jpg',
       metric: '150%',
       metricLabel: 'زيادة في الصفقات',
-      quote: 'صرت أقدّم عروض لعمالء أجانب وأسكر صفقات عن جد.',
+      quote: 'صرت أقدّم عروض لعملاء أجانب وأسكر صفقات عن جد.',
       improvement: 'صفقات دولية ناجحة'
     }
   ];
@@ -48,11 +48,11 @@ const Testimonials = () => {
         >
 
 
-          <h2 className="text-4xl lg:text-5xl font-bold text-charcoal mb-6 text-right">
+          <h2 className="text-4xl lg:text-5xl font-bold text-charcoal mb-6 text-center">
             قصص النجاح <span className="text-primary">الحقيقية</span>
           </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto text-right">
-            طالبنا ما بس تعلموا — غيّروا حياتهم!
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto text-center">
+            طلابنا ما بس تعلموا — غيّروا حياتهم!
           </p>
         </motion.div>
 
@@ -97,7 +97,7 @@ const Testimonials = () => {
                     {testimonial.name}
                   </div>
                   <div className="text-sm text-gray-600">
-                    {testimonial.role} في {testimonial.company}
+                    {testimonial.role} {testimonial.company}
                   </div>
                 </div>
               </div>

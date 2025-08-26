@@ -15,18 +15,20 @@ const SideNavigation: React.FC = () => {
 
   const sections: Section[] = [
     { id: 'hero', name: 'الرئيسية' },
+    { id: 'success-story', name: 'قصص النجاح' },
     { id: 'trust', name: 'الثقة' },
-    { id: 'audience', name: 'الجمهور' },
-    { id: 'offerings', name: 'العروض' },
-    { id: 'special', name: 'خصم محدود' },
-    { id: 'process', name: 'العملية' },
     { id: 'courses', name: 'الدورات' },
+    { id: 'offerings', name: 'المجالات المقدمة' },
+    { id: 'target-audience', name: 'الجمهور المستهدف' },
+    { id: 'benefits', name: 'الفوائد المباشرة' },
+    { id: 'special', name: 'خصم محدود' },
+    { id: 'process', name: 'الخطوات' },
     { id: 'achievements', name: 'الإنجازات' },
     { id: 'testimonials', name: 'الشهادات' },
-
-    { id: 'obstacles', name: 'العوائق' },
-    { id: 'faq', name: 'الأسئلة' },
+    { id: 'features', name: 'المميزات' },
+    { id: 'obstacles', name: 'إزالة العوائق' },
     { id: 'registration', name: 'التسجيل' },
+    { id: 'faq', name: 'الأسئلة الشائعة' },
   ];
 
   useEffect(() => {
@@ -98,7 +100,7 @@ const SideNavigation: React.FC = () => {
           animate={{ opacity: 1, x: 0 }}
           exit={{ opacity: 0, x: 100 }}
           transition={{ duration: 0.8, delay: 1, type: "spring", bounce: 0.3 }}
-                     className="fixed right-8 top-1/3 transform -translate-y-1/3 z-40"
+                     className="fixed right-8 top-1/4 transform -translate-y-1/4 z-40"
         >
           {/* Navigation dots */}
           <div className="flex flex-col gap-3 relative">

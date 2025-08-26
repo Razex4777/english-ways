@@ -9,7 +9,7 @@ const FieldOfferings = () => {
       icon: MessageCircle,
       title: 'محادثة يومية',
       description: 'مواقف واقعية للعمل والسفر والدراسة',
-      details: 'محادثات طبيعية، عبارات عملية، مواقف الحياة اليومية',
+      details: 'مواقف واقعية للعمل والسفر والدراسة',
       gradient: 'from-blue-500 to-cyan-600',
       bgColor: 'from-blue-50 to-cyan-50'
     },
@@ -17,7 +17,7 @@ const FieldOfferings = () => {
       icon: Volume2,
       title: 'تحسين النطق',
       description: 'مخارج سليمة وتمرينات للتغلب على لهجة L1',
-      details: 'تمارين صوتية، مخارج الحروف، تقليد الأصوات الطبيعية',
+      details: 'مخارج سليمة وتمرينات للتغلب على لهجة L1',
       gradient: 'from-purple-500 to-pink-600',
       bgColor: 'from-purple-50 to-pink-50'
     },
@@ -25,7 +25,7 @@ const FieldOfferings = () => {
       icon: Briefcase,
       title: 'إنجليزي الأعمال',
       description: 'عروض، اجتماعات، تفاوض، مراسلات مهنية',
-      details: 'عروض تقديمية، اجتماعات عمل، كتابة البريد الإلكتروني المهني',
+      details: 'عروض، اجتماعات، تفاوض، مراسلات مهنية',
       gradient: 'from-green-500 to-emerald-600',
       bgColor: 'from-green-50 to-emerald-50'
     },
@@ -33,7 +33,7 @@ const FieldOfferings = () => {
       icon: Users,
       title: 'التحضير للمقابلات',
       description: 'أسئلة شائعة + تمثيل أدوار + تغذية راجعة فورية',
-      details: 'أسئلة المقابلات، تمارين الدور، تقييم الأداء، نصائح عملية',
+      details: 'أسئلة شائعة + تمثيل أدوار + تغذية راجعة فورية',
       gradient: 'from-orange-500 to-red-600',
       bgColor: 'from-orange-50 to-red-50'
     },
@@ -41,7 +41,7 @@ const FieldOfferings = () => {
       icon: Plane,
       title: 'السفر والاختبارات الدولية',
       description: 'أساسيات التعامل والتواصل، واستراتيجيات فهم سمع/قراءة',
-      details: 'مفردات السفر، محادثات المطار، فهم الإرشادات، اختبارات دولية',
+      details: 'أساسيات التعامل والتواصل، واستراتيجيات فهم سمع/قراءة',
       gradient: 'from-indigo-500 to-purple-600',
       bgColor: 'from-indigo-50 to-purple-50'
     }
@@ -58,13 +58,13 @@ const FieldOfferings = () => {
           viewport={{ once: true }}
         >
 
-          <h2 className="text-4xl lg:text-5xl font-bold text-charcoal mb-6 text-right">
+          <h2 className="text-4xl lg:text-5xl font-bold text-charcoal mb-6 text-center">
             <span className="text-gray-800">دوراتنا تناسبك</span>{' '}
             <span className="bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent">
               أياً كان هدفك
             </span>
           </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto text-right leading-relaxed">
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto text-center leading-relaxed">
             برامج متخصصة مصممة لتلبية احتياجاتك المهنية والأكاديمية والشخصية
           </p>
         </motion.div>
@@ -106,14 +106,9 @@ const FieldOfferings = () => {
                     <h3 className="text-2xl font-bold text-charcoal mb-4 group-hover:text-primary transition-colors duration-300">
                       {offering.title}
                     </h3>
-                    <p className="text-gray-600 leading-relaxed mb-4 group-hover:text-gray-700 transition-colors duration-300">
+                    <p className="text-gray-600 leading-relaxed mb-6 group-hover:text-gray-700 transition-colors duration-300">
                       {offering.description}
                     </p>
-                    <div className="bg-gray-50 rounded-xl p-4 mb-4">
-                      <p className="text-sm text-gray-700 leading-relaxed">
-                        {offering.details}
-                      </p>
-                    </div>
                   </div>
 
                   {/* Progress indicator */}
@@ -130,6 +125,23 @@ const FieldOfferings = () => {
           ))}
         </div>
 
+        {/* Single CTA Button */}
+        <motion.div
+          className="flex justify-center mt-12"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.5 }}
+          viewport={{ once: true }}
+        >
+          <motion.button
+            onClick={scrollToRegistration}
+            className="bg-gradient-to-r from-primary to-purple-600 text-white px-8 py-4 rounded-2xl font-bold text-lg hover:shadow-2xl transition-all duration-300"
+            whileHover={{ scale: 1.05, boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.25)" }}
+            whileTap={{ scale: 0.95 }}
+          >
+            انضم الينا الآن
+          </motion.button>
+        </motion.div>
 
       </div>
     </section>

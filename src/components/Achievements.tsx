@@ -14,8 +14,8 @@ const Achievements = () => {
     },
     {
       icon: TrendingUp,
-      number: '98%',
-      label: 'نسبة إتمام البرامج',
+      number: '95%',
+      label: 'نسبة إتمام في المسارات الأساسية',
       description: 'معدل إنجاز ممتاز في جميع المسارات التعليمية',
       gradient: 'from-green-500 to-emerald-600',
       bgColor: 'from-green-50 to-emerald-50'
@@ -23,7 +23,7 @@ const Achievements = () => {
     {
       icon: Award,
       number: '100%',
-      label: 'شهادة من الأكاديمية',
+      label: 'شهادة من الأكاديمية بعد اجتياز التقييم النهائي',
       description: 'شهادة معتمدة لكل متعلم ناجح',
       gradient: 'from-purple-500 to-pink-600',
       bgColor: 'from-purple-50 to-pink-50'
@@ -78,9 +78,8 @@ const Achievements = () => {
 
 
           <h2 className="text-4xl lg:text-6xl font-bold text-charcoal mb-6 text-right">
-            <span className="text-gray-800">أرقامنا</span>{' '}
             <span className="bg-gradient-to-r from-indigo-500 to-purple-600 bg-clip-text text-transparent">
-              تتحدث عن نفسها
+              إنجازاتنا
             </span>
           </h2>
 

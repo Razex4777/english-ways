@@ -149,21 +149,70 @@
   .container-max {
     @apply max-w-7xl mx-auto;
   }
+
+  /* Mobile-specific utilities */
+  .mobile-safe-area {
+    padding-bottom: env(safe-area-inset-bottom);
+    padding-top: env(safe-area-inset-top);
+  }
+
+  .mobile-touch-target {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  .mobile-text {
+    font-size: clamp(14px, 4vw, 16px);
+  }
+
+  .mobile-heading {
+    font-size: clamp(20px, 6vw, 32px);
+  }
+
+  .mobile-subheading {
+    font-size: clamp(16px, 5vw, 24px);
+  }
   
+  /* Mobile Optimizations */
+  @media (max-width: 640px) {
+    /* Improve touch targets */
+    button, .btn-primary, input, select, textarea {
+      min-height: 44px;
+    }
+
+    /* Better text readability on mobile */
+    body {
+      font-size: 16px; /* Prevents zoom on iOS */
+      line-height: 1.6;
+    }
+
+    /* Smooth scrolling on mobile */
+    html {
+      scroll-behavior: smooth;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    /* Better focus states on mobile */
+    :focus {
+      outline: 2px solid #635DFF;
+      outline-offset: 2px;
+    }
+  }
+
   /* Custom scrollbar */
   ::-webkit-scrollbar {
     width: 8px;
   }
-  
+
   ::-webkit-scrollbar-track {
     background: #f1f1f1;
   }
-  
+
   ::-webkit-scrollbar-thumb {
     background: linear-gradient(45deg, #635DFF, #8B5CF6);
     border-radius: 4px;
   }
-  
+
   ::-webkit-scrollbar-thumb:hover {
     background: linear-gradient(45deg, #5B4FE8, #7C3AED);
   }

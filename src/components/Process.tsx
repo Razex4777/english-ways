@@ -42,12 +42,7 @@ const CertificateIcon = ({ className }: { className?: string }) => (
   </svg>
 );
 
-const ArrowIcon = ({ className }: { className?: string }) => (
-  <svg className={className} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M5 12h14" stroke="currentColor" strokeWidth="2"/>
-    <path d="M12 5l7 7-7 7" stroke="currentColor" strokeWidth="2"/>
-  </svg>
-);
+
 
 const Process = () => {
   const steps = [
@@ -71,8 +66,8 @@ const Process = () => {
     },
     {
       icon: LearningIcon,
-      title: 'خطة شخصية + دروس مباشرة',
-      description: 'محادثات حقيقية وتمارين نطق ومهام عملية في مواقف العمل والسفر.',
+      title: 'خطة شخصية للوصول إلى التواصل بثقة',
+      description: 'خطة مخصصة تماماً لمستواك وأهدافك لضمان تطورك المستمر.',
       step: '03',
       color: 'from-blue-500 to-indigo-600',
       bgColor: 'from-blue-50 to-indigo-50',
@@ -80,8 +75,8 @@ const Process = () => {
     },
     {
       icon: CertificateIcon,
-      title: 'متابعة تقدم وشهادة إنجاز',
-      description: 'تقرير أسبوعي مختصر وشهادة بعد اجتياز متطلبات التقييم النهائي.',
+      title: 'دروس منتظمة + متابعة تقدم خطوة بخطوة',
+      description: 'محادثات حقيقية وتمارين نطق مع تقرير أسبوعي مفصل لتقدمك.',
       step: '04',
       color: 'from-amber-500 to-orange-600',
       bgColor: 'from-amber-50 to-orange-50',
@@ -130,44 +125,22 @@ const Process = () => {
           transition={{ duration: 0.8 }}
           viewport={{ once: true }}
         >
-          <motion.div
-            className="inline-flex items-center gap-3 bg-white/70 backdrop-blur-sm rounded-2xl px-8 py-4 mb-8 shadow-lg border border-white/30"
-            initial={{ scale: 0, rotate: -10 }}
-            whileInView={{ scale: 1, rotate: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            viewport={{ once: true }}
-          >
-            <motion.div 
-              className="w-3 h-3 bg-gradient-to-r from-emerald-500 to-teal-500 rounded-full"
-              animate={{ scale: [1, 1.3, 1] }}
-              transition={{ duration: 2, repeat: Infinity }}
-            />
-            <span className="bg-gradient-to-r from-gray-700 to-gray-600 bg-clip-text text-transparent font-semibold">خطوات التعلم</span>
-          </motion.div>
+
           
           <motion.h2
-            className="text-5xl lg:text-7xl font-black mb-8 text-right leading-tight"
+            className="text-5xl lg:text-7xl font-black mb-8 text-center leading-tight"
             initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.4 }}
             viewport={{ once: true }}
           >
-            <span className="text-charcoal">من الطموح إلى</span>{' '}
-            <br className="lg:hidden" />
             <span className="bg-gradient-to-r from-emerald-500 via-blue-500 to-violet-600 bg-clip-text text-transparent relative">
-              الطلاقة
-              <motion.div
-                className="absolute -bottom-2 left-0 right-0 h-1 bg-gradient-to-r from-emerald-500 via-blue-500 to-violet-600 rounded-full"
-                initial={{ width: 0 }}
-                whileInView={{ width: "100%" }}
-                transition={{ duration: 1, delay: 1 }}
-                viewport={{ once: true }}
-              />
+              خطوات التعلّم
             </span>
           </motion.h2>
           
           <motion.p
-            className="text-xl lg:text-2xl text-gray-600 max-w-4xl mx-auto text-right leading-relaxed font-medium"
+            className="text-xl lg:text-2xl text-gray-600 max-w-4xl mx-auto text-center leading-relaxed font-medium"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.6 }}
@@ -235,7 +208,7 @@ const Process = () => {
                       {step.title}
                     </motion.h3>
                     
-                    <p className="text-gray-600 text-lg leading-relaxed text-right group-hover:text-gray-700 transition-colors duration-300">
+                    <p className="text-gray-600 text-lg leading-relaxed text-center group-hover:text-gray-700 transition-colors duration-300">
                       {step.description}
                     </p>
 
@@ -255,20 +228,7 @@ const Process = () => {
                   )}
                 </motion.div>
 
-                {/* Floating arrow connector for large screens */}
-                {index < steps.length - 1 && (
-                  <motion.div
-                    className="hidden lg:block absolute -bottom-6 left-1/2 transform -translate-x-1/2"
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6, delay: index * 0.2 + 1 }}
-                    viewport={{ once: true }}
-                  >
-                    <div className={`w-12 h-12 bg-gradient-to-br ${step.color} rounded-2xl flex items-center justify-center shadow-lg rotate-45`}>
-                      <ArrowIcon className="w-5 h-5 text-white -rotate-45" />
-                    </div>
-                  </motion.div>
-                )}
+
               </motion.div>
             ))}
           </div>

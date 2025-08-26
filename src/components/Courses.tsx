@@ -15,7 +15,7 @@ const Courses: React.FC = () => {
       skills: ['محادثات قصيرة', 'مهام يومية بسيطة', 'تقديم معلومات شخصية'],
       focus: 'النطق، الاستماع، القراءة الأساسية',
       description: 'مهارات المحادثة الأساسية، مفردات الحياة اليومية، التواصل البسيط',
-      price: 'تحديد السعر بعد التقييم',
+
       improvement: '+40% ثقة في التواصل'
     },
     {
@@ -28,7 +28,7 @@ const Courses: React.FC = () => {
       skills: ['كتابة نصوص قصيرة', 'سرد قصص ومشاركة حوارات', 'التواصل اليومي المتقدم'],
       focus: 'توسيع مفردات الحياة اليومية',
       description: 'السفر، الطعام، المواقف الشائعة، الكتابة الأساسية، فهم أفضل للنصوص',
-      price: 'تحديد السعر بعد التقييم',
+
       improvement: '+60% فهم وتواصل'
     },
     {
@@ -41,7 +41,7 @@ const Courses: React.FC = () => {
       skills: ['فهم الأخبار والأفلام', 'مناقشة المقالات', 'كتابة تقارير شخصية'],
       focus: 'تراكيب لغوية أعمق ومفردات موضوعية موسعة',
       description: 'قراءة وكتابة متطورة، فهم المحتوى المعقد، مناقشات مستوى متوسط',
-      price: 'تحديد السعر بعد التقييم',
+
       improvement: '+75% قدرة التحليل'
     },
     {
@@ -54,7 +54,7 @@ const Courses: React.FC = () => {
       skills: ['أسالیب كتابة متقدمة', 'تلخیص وتحلیل', 'عرض الرأي بفصاحة'],
       focus: 'مهارات قراءة وكتابة رفيعة المستوى',
       description: 'كتابة وتحليل متقدمة، عرض الأفكار بوضوح، إعداد عروض تقديمية',
-      price: 'تحديد السعر بعد التقييم',
+
       improvement: '+85% مهارات القيادة'
     },
     {
@@ -67,7 +67,7 @@ const Courses: React.FC = () => {
       skills: ['مقابلات عمل', 'إدارة اجتماعات', 'كتابة عقود ومقترحات', 'عروض تقديمية'],
       focus: 'محاكاة مواقف واقعية في بيئة الأعمال',
       description: 'دورات مصممة لتطوير لغة الأعمال، ومهارات التفاوض، والعروض التقديمية',
-      price: 'تحديد السعر بعد التقييم',
+
       improvement: '+90% فعالية مهنية'
     }
   ];
@@ -83,13 +83,13 @@ const Courses: React.FC = () => {
   };
 
   const cardVariants = {
-    hidden: { 
-      opacity: 0, 
+    hidden: {
+      opacity: 0,
       y: 60,
       scale: 0.9
     },
-    visible: { 
-      opacity: 1, 
+    visible: {
+      opacity: 1,
       y: 0,
       scale: 1,
       transition: {
@@ -113,13 +113,12 @@ const Courses: React.FC = () => {
             viewport={{ once: true }}
           >
             <div className="bg-gradient-to-r from-blue-50 via-indigo-50 to-purple-50 rounded-3xl p-8 lg:p-12 border border-white/50 shadow-lg backdrop-blur-sm">
-              <h2 className="text-3xl lg:text-5xl font-bold text-gray-900 mb-6 text-right leading-tight">
+              <h2 className="text-3xl lg:text-5xl font-bold text-gray-900 mb-6 text-center leading-tight">
                 <span className="text-gray-800">مهما كان مستواك، لدينا مسار واضح</span>{' '}
                 <span className="gradient-text">للوصول إلى الثقة في التواصل</span>
               </h2>
-              <p className="text-lg lg:text-xl text-gray-600 max-w-4xl mx-auto leading-relaxed text-right font-medium">
-                اختر مسارك لإتقان الإنجليزية. كل دورة مصممة بعناية مع نتائج قابلة للقياس
-                وتطبيقات واقعية في الحياة المهنية والشخصية.
+              <p className="text-lg lg:text-xl text-gray-600 max-w-4xl mx-auto leading-relaxed text-center font-medium">
+                اختر مسارك لإتقان الإنجليزية. كل دورة مصممة بعناية مع نتائج قابلة للقياس.
               </p>
             </div>
           </motion.div>
@@ -140,7 +139,7 @@ const Courses: React.FC = () => {
                 course.popular ? 'ring-2 ring-indigo-500 ring-opacity-50' : ''
               }`}
               variants={cardVariants}
-              whileHover={{ 
+              whileHover={{
                 y: -8,
                 transition: { duration: 0.3 }
               }}
@@ -149,14 +148,14 @@ const Courses: React.FC = () => {
               {course.popular && (
                 <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
                   <div className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-4 py-2 rounded-full text-sm font-semibold shadow-lg">
-                    Most Popular
+                    الأكثر تسجيلاََ
                   </div>
                 </div>
               )}
 
               {/* Course Header */}
-              <div className="mb-6">
-                <div className="flex items-center justify-between mb-4">
+              <div className="mb-6 text-center">
+                <div className="flex flex-col items-center space-y-2 mb-4">
                   <h3 className="text-2xl font-bold text-gray-900">{course.level}</h3>
                   <div className="flex items-center space-x-1">
                     <Star className="w-5 h-5 text-yellow-400 fill-current" />
@@ -164,25 +163,17 @@ const Courses: React.FC = () => {
                   </div>
                 </div>
                 <p className="text-gray-600 mb-4">{course.description}</p>
-                
-                {/* Improvement Metric */}
-                <div className="bg-green-50 border border-green-200 rounded-lg p-3 mb-4">
-                  <div className="flex items-center space-x-2">
-                    <TrendingUp className="w-5 h-5 text-green-600" />
-                    <span className="text-green-800 font-semibold">{course.improvement}</span>
-                  </div>
-                </div>
               </div>
 
               {/* Course Details */}
               <div className="space-y-4 mb-6 text-right">
-                <div className="flex items-center justify-end gap-3">
-                  <span className="text-gray-700">المدة: {course.duration}</span>
+                <div className="flex items-center justify-start gap-3">
                   <Clock className="w-5 h-5 text-indigo-600" />
+                  <span className="text-gray-700">المدة: {course.duration}</span>
                 </div>
-                <div className="flex items-center justify-end gap-3">
-                  <span className="text-gray-700">{course.sessions}</span>
+                <div className="flex items-center justify-start gap-3">
                   <Users className="w-5 h-5 text-indigo-600" />
+                  <span className="text-gray-700">{course.sessions}</span>
                 </div>
                 <div>
                   <p className="text-sm font-semibold text-gray-900 mb-2">التركيز: {course.focus}</p>
@@ -191,25 +182,19 @@ const Courses: React.FC = () => {
 
               {/* Skills List */}
               <div className="mb-6 text-right">
-                <h4 className="text-sm font-semibold text-gray-900 mb-3">المهارات الرئيسية:</h4>
-                <ul className="space-y-2">
+                <h4 className="text-sm font-semibold text-gray-900 mb-3 text-right">المهارات الرئيسية:</h4>
+                <ul className="space-y-2 text-right">
                   {course.skills.map((skill, skillIndex) => (
-                    <li key={skillIndex} className="flex items-center gap-3 justify-end">
-                      <span className="text-sm text-gray-700">{skill}</span>
-                      <CheckCircle className="w-4 h-4 text-green-500" />
+                    <li key={skillIndex} className="flex items-center gap-3 justify-end text-right">
+                      <span className="text-sm text-gray-700 text-right flex-1">{skill}</span>
+                      <CheckCircle className="w-4 h-4 text-green-500 flex-shrink-0" />
                     </li>
                   ))}
                 </ul>
               </div>
 
-              {/* Price and CTA */}
+              {/* CTA */}
               <div className="border-t border-gray-200 pt-6">
-                <div className="flex items-center justify-between mb-4">
-                  <div>
-                    <span className="text-3xl font-bold text-gray-900">{course.price}</span>
-
-                  </div>
-                </div>
                 <motion.button
                   onClick={scrollToRegistration}
                   className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 px-6 rounded-full transition-all duration-300 group-hover:shadow-lg"

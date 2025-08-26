@@ -21,7 +21,7 @@ const SuccessStory = () => {
         >
 
 
-          <h2 className="text-4xl lg:text-5xl font-bold text-charcoal mb-6 text-right">
+          <h2 className="text-4xl lg:text-5xl font-bold text-charcoal mb-6 text-center">
             من التوتر إلى الطلاقة: <span className="text-primary">قصة ليان</span>
           </h2>
         </motion.div>
@@ -65,7 +65,11 @@ const SuccessStory = () => {
                     
                     <div className="bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 rounded-xl p-4">
                       <p className="text-lg font-semibold text-green-700">
-                        <CheckCircle className="w-5 h-5 inline ml-2 text-green-600" />
+                        <img
+                          src="/img1.jpg"
+                          alt="Success"
+                          className="w-5 h-5 inline ml-2 rounded-full object-cover"
+                        />
                         النتيجة: أنهت مقابلة عمل دولية وسمعت: "إنجليزيتك رائعة!"
                       </p>
                     </div>
@@ -80,13 +84,12 @@ const SuccessStory = () => {
                   whileHover={{ scale: 1.05 }}
                   transition={{ duration: 0.3 }}
                 >
-                  <div className="w-48 h-48 mx-auto bg-gradient-to-br from-primary/20 to-primary/10 rounded-full flex items-center justify-center shadow-xl border-4 border-white">
-                    <div className="text-center">
-                      <div className="w-16 h-16 bg-primary rounded-full mx-auto mb-4 flex items-center justify-center">
-                        <CheckCircle className="w-8 h-8 text-white" />
-                      </div>
-                      <p className="text-sm font-semibold text-primary">نجاح مؤكد</p>
-                    </div>
+                  <div className="w-48 h-48 mx-auto bg-gradient-to-br from-primary/20 to-primary/10 rounded-full flex items-center justify-center shadow-xl border-4 border-white overflow-hidden">
+                    <img
+                      src="/img1.jpg"
+                      alt="Success Icon"
+                      className="w-full h-full object-cover rounded-full"
+                    />
                   </div>
                 </motion.div>
               </div>

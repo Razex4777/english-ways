@@ -1,11 +1,13 @@
 import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import AnimationProvider from './components/AnimationProvider';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import SuccessStory from './components/SuccessStory';
 import TrustBar from './components/TrustBar';
-import TargetAudience from './components/TargetAudience';
 import FieldOfferings from './components/FieldOfferings';
+import TargetAudience from './components/TargetAudience';
+import Benefits from './components/Benefits';
 import SpecialOffer from './components/SpecialOffer';
 import Process from './components/Process';
 import Courses from './components/Courses';
@@ -18,31 +20,46 @@ import RegistrationSection from './components/RegistrationSection';
 import FloatingCTA from './components/FloatingCTA';
 import ExitIntentModal from './components/ExitIntentModal';
 import SideNavigation from './components/SideNavigation';
+import ThankYou from './components/ThankYou';
+
+function HomePage() {
+  return (
+    <>
+      <Navbar />
+      <Hero />
+      <SuccessStory />
+      <TrustBar />
+      <Courses />
+      <FieldOfferings />
+      <TargetAudience />
+      <Benefits />
+      <Features />
+      <Testimonials />
+      <SpecialOffer />
+      <RemoveObstacles />
+      <Process />
+      <Achievements />
+      <RegistrationSection />
+      <FAQ />
+      <FloatingCTA />
+      <ExitIntentModal />
+      <SideNavigation />
+    </>
+  );
+}
 
 function App() {
   return (
-    <AnimationProvider>
-      <div className="App">
-        <Navbar />
-        <Hero />
-        <SuccessStory />
-        <TrustBar />
-        <TargetAudience />
-        <FieldOfferings />
-        <SpecialOffer />
-        <Process />
-        <Courses />
-        <Achievements />
-        <Testimonials />
-        <Features />
-        <RemoveObstacles />
-        <FAQ />
-        <RegistrationSection />
-        <FloatingCTA />
-        <ExitIntentModal />
-        <SideNavigation />
-      </div>
-    </AnimationProvider>
+    <Router>
+      <AnimationProvider>
+        <div className="App">
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/thank-you" element={<ThankYou />} />
+          </Routes>
+        </div>
+      </AnimationProvider>
+    </Router>
   );
 }
 

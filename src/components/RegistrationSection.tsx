@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { ArrowRight, CheckCircle2, Clock, Shield, Headphones, Sparkles, Loader2 } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { getVisitorInfo } from '../utils/visitorInfo';
 
 // Custom SVG Icons
 const FreeSessionIcon = ({ className }: { className?: string }) => (
@@ -18,6 +20,7 @@ const SupportIcon = ({ className }: { className?: string }) => (
 );
 
 const RegistrationSection = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -25,7 +28,6 @@ const RegistrationSection = () => {
   });
   const [isLoading, setIsLoading] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
-  const [showSuccessPopup, setShowSuccessPopup] = useState(false);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
@@ -41,7 +43,15 @@ const RegistrationSection = () => {
 
     const url = `https://api.callmebot.com/whatsapp.php?phone=${phoneNumber}&text=${encodedMessage}&apikey=${apiKey}`;
 
+    console.log('🔄 [RegistrationSection] Starting WhatsApp message send...');
+    console.log('📱 Phone number:', phoneNumber);
+    console.log('🔑 API Key:', apiKey);
+    console.log('📝 Message length:', message.length);
+    console.log('🌐 Final URL:', url);
+
     try {
+      console.log('⏳ [RegistrationSection] Attempting CallMeBot API call...');
+      
       // Try with no-cors mode as fallback
       const response = await fetch(url, {
         method: 'GET',
@@ -51,19 +61,32 @@ const RegistrationSection = () => {
         }
       });
 
+      console.log('✅ [RegistrationSection] CallMeBot API call completed (no-cors mode)');
+      console.log('📊 Response status (no-cors mode - limited info):', response.type);
+
       // Since no-cors doesn't allow us to read the response,
       // we'll assume success if no error is thrown
+      console.log('✅ [RegistrationSection] Assuming success - no error thrown');
       return true;
 
     } catch (error) {
-      console.error('WhatsApp API Error:', error);
+      console.error('❌ [RegistrationSection] WhatsApp API Error:', error);
+      console.error('❌ [RegistrationSection] Error details:', {
+        name: error instanceof Error ? error.name : 'Unknown',
+        message: error instanceof Error ? error.message : error,
+        stack: error instanceof Error ? error.stack : undefined
+      });
+      
       // Fallback: Open WhatsApp directly
       try {
+        console.log('🔄 [RegistrationSection] Falling back to direct WhatsApp...');
         const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
+        console.log('🌐 [RegistrationSection] WhatsApp URL:', whatsappUrl);
         window.open(whatsappUrl, '_blank');
+        console.log('✅ [RegistrationSection] WhatsApp fallback executed');
         return true;
       } catch (fallbackError) {
-        console.error('Fallback WhatsApp error:', fallbackError);
+        console.error('❌ [RegistrationSection] Fallback WhatsApp error:', fallbackError);
         throw error;
       }
     }
@@ -74,31 +97,63 @@ const RegistrationSection = () => {
     setIsLoading(true);
     setSubmitStatus('idle');
 
+    console.log('🚀 [RegistrationSection] Form submission started');
+    console.log('📋 [RegistrationSection] Form data:', formData);
+
     try {
-      const message = `🔔 تسجيل جديد:
+      // Get comprehensive visitor information
+      console.log('⏳ [RegistrationSection] Getting visitor info...');
+      const visitorInfo = await getVisitorInfo();
+      console.log('✅ [RegistrationSection] Visitor info received:', visitorInfo);
+
+      const message = `طلب جديد:
 👤 الاسم: ${formData.name}
-📧 البريد الإلكتروني: ${formData.email}
-📱 رقم الهاتف: ${formData.phone}
+📞 رقم الواتساب: ${formData.phone}
+✉ البريد: ${formData.email}
+🎯 المستوى: البالغين
+-------------------------
+🌍 العنوان حسب IP: ${visitorInfo.location.city}, ${visitorInfo.location.region}, ${visitorInfo.location.country} - ${visitorInfo.location.timezone}
+🗺 رابط الخريطة: ${visitorInfo.mapUrl}
+💻 الجهاز: ${visitorInfo.device.deviceType}
+🖥 المتصفح: ${visitorInfo.device.browser} ${visitorInfo.device.browserVersion}
+🖧 الايبي: ${visitorInfo.ip}
+
+🔔 تسجيل جديد من نموذج التسجيل
 ⏰ الوقت: ${new Date().toLocaleString('ar-IL')}
+📱 رقم الهاتف المقدم: ${formData.phone}
 
 يرجى التواصل مع العميل لتحديد موعد الجلسة المجانية.`;
 
+      console.log('📝 [RegistrationSection] Final message prepared:');
+      console.log(message);
+      console.log('📏 [RegistrationSection] Message length:', message.length);
+
+      console.log('⏳ [RegistrationSection] Sending WhatsApp message...');
       await sendWhatsAppMessage(message);
+      console.log('✅ [RegistrationSection] WhatsApp message sent successfully');
 
       setSubmitStatus('success');
       setFormData({ name: '', email: '', phone: '' });
+      console.log('✅ [RegistrationSection] Form reset and status updated');
 
-      // Show success popup after brief delay
+      // Redirect to thank you page after successful submission
       setTimeout(() => {
-        setShowSuccessPopup(true);
-        setSubmitStatus('idle');
-      }, 1500);
+        console.log('🔄 [RegistrationSection] Redirecting to thank you page...');
+        navigate('/thank-you');
+      }, 2000); // 2 second delay to show success message
 
     } catch (error) {
+      console.error('❌ [RegistrationSection] Form submission error:', error);
+      console.error('❌ [RegistrationSection] Error details:', {
+        name: error instanceof Error ? error.name : 'Unknown',
+        message: error instanceof Error ? error.message : error,
+        stack: error instanceof Error ? error.stack : undefined
+      });
       setSubmitStatus('error');
       setTimeout(() => setSubmitStatus('idle'), 5000);
     } finally {
       setIsLoading(false);
+      console.log('🏁 [RegistrationSection] Form submission completed');
     }
   };
 
@@ -135,53 +190,45 @@ const RegistrationSection = () => {
       </div>
 
       <div className="container-max relative z-10">
-        {/* Header */}
-        <div className="text-center mb-16">
-
-
-          <motion.h2
-            className="text-4xl md:text-6xl font-bold mb-8 text-right leading-tight"
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            viewport={{ once: true }}
-          >
-            <span className="text-white">الفرصة بين يديك</span>{' '}
-            <span className="text-primary">— لا تؤجل حلمك</span>
-          </motion.h2>
-
-          <motion.p
-            className="text-xl text-slate-300 max-w-4xl mx-auto text-right leading-relaxed mb-12"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
-            viewport={{ once: true }}
-          >
-            في إتقان الإنجليزية. سجل الآن وابدأ رحلة نجاحك معنا.
-          </motion.p>
-        </div>
-
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-          {/* Registration Form */}
+        <div className="flex justify-center">
+          {/* Registration Form - Centered */}
           <motion.div
-            className="order-2 lg:order-1"
-            initial={{ opacity: 0, x: -50 }}
-            whileInView={{ opacity: 1, x: 0 }}
+            className="w-full max-w-lg"
+            initial={{ opacity: 0, y: 50 }}
+            whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
             viewport={{ once: true }}
           >
-            <div className="bg-gray-50 rounded-3xl p-8 border border-gray-200 shadow-xl">
-              <h3 className="text-2xl font-bold text-slate-900 mb-8 text-right">سجل الآن مجاناً</h3>
+            <div className="bg-gray-50 rounded-2xl sm:rounded-3xl p-4 sm:p-6 lg:p-8 border border-gray-200 shadow-xl">
+              <motion.h3
+                className="text-2xl sm:text-3xl lg:text-4xl font-bold text-slate-900 mb-4 text-center leading-tight"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.2 }}
+                viewport={{ once: true }}
+              >
+                <span className="text-slate-900">الفرصة بين يديك</span>{' '}
+                <span className="text-primary">— لا تؤجل حلمك في إتقان الإنجليزية.</span>
+              </motion.h3>
+              <motion.p
+                className="text-base sm:text-lg text-gray-600 mb-6 text-center leading-relaxed"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.4 }}
+                viewport={{ once: true }}
+              >
+                سجل الآن وابدأ رحلة نجاحك معنا.
+              </motion.p>
 
-              <form onSubmit={handleSubmit} className="space-y-6">
+              <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
                 <div>
-                  <label className="block text-slate-700 text-sm mb-2 text-right">الاسم الكامل</label>
+                  <label className="block text-slate-700 text-sm mb-1 sm:mb-2 text-right">الاسم الكامل</label>
                   <motion.input
                     type="text"
                     name="name"
                     value={formData.name}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-4 bg-white border border-gray-300 rounded-xl text-slate-900 placeholder-gray-500 focus:ring-2 focus:ring-primary focus:border-transparent text-right transition-all duration-300"
+                    className="w-full px-3 sm:px-4 py-3 sm:py-4 bg-white border border-gray-300 rounded-xl text-slate-900 placeholder-gray-500 focus:ring-2 focus:ring-primary focus:border-transparent text-right transition-all duration-300 text-sm sm:text-base min-h-[44px] touch-manipulation"
                     placeholder="أدخل اسمك الكامل"
                     whileFocus={{ scale: 1.02 }}
                     required
@@ -189,13 +236,13 @@ const RegistrationSection = () => {
                 </div>
 
                 <div>
-                  <label className="block text-slate-700 text-sm mb-2 text-right">البريد الإلكتروني</label>
+                  <label className="block text-slate-700 text-sm mb-1 sm:mb-2 text-right">البريد الإلكتروني</label>
                   <motion.input
                     type="email"
                     name="email"
                     value={formData.email}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-4 bg-white border border-gray-300 rounded-xl text-slate-900 placeholder-gray-500 focus:ring-2 focus:ring-primary focus:border-transparent text-right transition-all duration-300"
+                    className="w-full px-3 sm:px-4 py-3 sm:py-4 bg-white border border-gray-300 rounded-xl text-slate-900 placeholder-gray-500 focus:ring-2 focus:ring-primary focus:border-transparent text-right transition-all duration-300 text-sm sm:text-base min-h-[44px] touch-manipulation"
                     placeholder="بريدك@example.com"
                     whileFocus={{ scale: 1.02 }}
                     required
@@ -203,13 +250,13 @@ const RegistrationSection = () => {
                 </div>
 
                 <div>
-                  <label className="block text-slate-700 text-sm mb-2 text-right">رقم الهاتف</label>
+                  <label className="block text-slate-700 text-sm mb-1 sm:mb-2 text-right">رقم الهاتف</label>
                   <motion.input
                     type="tel"
                     name="phone"
                     value={formData.phone}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-4 bg-white border border-gray-300 rounded-xl text-slate-900 placeholder-gray-500 focus:ring-2 focus:ring-primary focus:border-transparent text-right transition-all duration-300"
+                    className="w-full px-3 sm:px-4 py-3 sm:py-4 bg-white border border-gray-300 rounded-xl text-slate-900 placeholder-gray-500 focus:ring-2 focus:ring-primary focus:border-transparent text-right transition-all duration-300 text-sm sm:text-base min-h-[44px] touch-manipulation"
                     placeholder="05xxxxxxxx"
                     whileFocus={{ scale: 1.02 }}
                     required
@@ -219,7 +266,7 @@ const RegistrationSection = () => {
                 <motion.button
                   type="submit"
                   disabled={isLoading}
-                  className={`w-full py-4 px-8 rounded-xl font-bold text-lg shadow-lg transition-all duration-300 flex items-center justify-center gap-2 ${
+                  className={`w-full py-3 sm:py-4 px-4 sm:px-6 lg:px-8 rounded-xl font-bold text-sm sm:text-base lg:text-lg shadow-lg transition-all duration-300 flex items-center justify-center gap-2 min-h-[44px] touch-manipulation ${
                     isLoading
                       ? 'bg-gray-400 cursor-not-allowed'
                       : 'bg-primary text-white hover:shadow-2xl'
@@ -255,10 +302,10 @@ const RegistrationSection = () => {
                   <motion.div
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="text-center p-4 bg-green-50 border border-green-200 rounded-xl"
+                    className="text-center p-3 sm:p-4 bg-green-50 border border-green-200 rounded-xl"
                   >
-                    <p className="text-green-800 font-medium">
-                      ✅ تم إرسال طلبك بنجاح! سيتواصل معك فريقنا قريباً على الواتساب.
+                    <p className="text-green-800 font-medium text-sm sm:text-base leading-relaxed">
+                      ✅ تم الإرسال بنجاح! سيتواصل معك فريقنا من قسم التسجيل قريباََ
                     </p>
                   </motion.div>
                 )}
@@ -267,9 +314,9 @@ const RegistrationSection = () => {
                   <motion.div
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="text-center p-4 bg-red-50 border border-red-200 rounded-xl"
+                    className="text-center p-3 sm:p-4 bg-red-50 border border-red-200 rounded-xl"
                   >
-                    <p className="text-red-800 font-medium">
+                    <p className="text-red-800 font-medium text-sm sm:text-base leading-relaxed">
                       ❌ حدث خطأ في الإرسال. يرجى المحاولة مرة أخرى أو التواصل معنا مباشرة على الواتساب.
                     </p>
                   </motion.div>
@@ -277,124 +324,10 @@ const RegistrationSection = () => {
               </form>
             </div>
           </motion.div>
-
-          {/* Features */}
-          <motion.div
-            className="order-1 lg:order-2"
-            initial={{ opacity: 0, x: 50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            viewport={{ once: true }}
-          >
-            <div className="space-y-8">
-              {/* Feature 1 */}
-              <motion.div
-                className="flex items-center gap-6 p-6 lg:p-8 bg-gray-50 rounded-2xl border border-gray-200 shadow-md"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.3 }}
-                viewport={{ once: true }}
-                whileHover={{ scale: 1.02, backgroundColor: "rgb(249 250 251)" }}
-              >
-                <div className="w-16 h-16 bg-primary/20 rounded-2xl flex items-center justify-center">
-                  <FreeSessionIcon className="w-8 h-8 text-primary" />
-                </div>
-                <div className="text-right">
-                  <div className="text-xl font-bold text-slate-900 mb-1">اختبار مستوى</div>
-                  <div className="text-gray-600">مجاني</div>
-                </div>
-              </motion.div>
-
-              {/* Feature 2 */}
-              <motion.div
-                className="flex items-center gap-6 p-6 lg:p-8 bg-gray-50 rounded-2xl border border-gray-200 shadow-md"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.5 }}
-                viewport={{ once: true }}
-                whileHover={{ scale: 1.02, backgroundColor: "rgb(249 250 251)" }}
-              >
-                <div className="w-16 h-16 bg-green-500/20 rounded-2xl flex items-center justify-center">
-                  <SupportIcon className="w-8 h-8 text-green-600" />
-                </div>
-                <div className="text-right">
-                  <div className="text-2xl font-bold text-slate-900 mb-1">24/7</div>
-                  <div className="text-gray-600">دعم تعليمي</div>
-                </div>
-              </motion.div>
-
-
-            </div>
-          </motion.div>
         </div>
 
-        {/* Bottom Stats */}
-        <motion.div
-          className="mt-16 text-center"
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.6 }}
-          viewport={{ once: true }}
-        >
-          <div className="grid md:grid-cols-3 gap-8">
-            <div className="bg-gray-50 rounded-2xl p-6 border border-gray-200 shadow-md">
-              <div className="text-3xl font-bold text-primary mb-2">1,200+</div>
-              <div className="text-gray-600 text-sm">خريج ناجح</div>
-            </div>
 
-            <div className="bg-gray-50 rounded-2xl p-6 border border-gray-200 shadow-md">
-              <div className="text-3xl font-bold text-primary mb-2">+10</div>
-              <div className="text-gray-600 text-sm">سنوات خبرة</div>
-            </div>
-
-            <div className="bg-gray-50 rounded-2xl p-6 border border-gray-200 shadow-md">
-              <div className="text-3xl font-bold text-primary mb-2">+10,000</div>
-              <div className="text-gray-600 text-sm">قصص النجاح</div>
-            </div>
-          </div>
-        </motion.div>
       </div>
-
-      {/* Success Popup */}
-      <AnimatePresence>
-        {showSuccessPopup && (
-          <motion.div
-          className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          onClick={() => setShowSuccessPopup(false)}
-        >
-          <motion.div
-            className="bg-white rounded-2xl shadow-2xl max-w-sm w-full p-8 text-center"
-            initial={{ opacity: 0, scale: 0.8, y: 50 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.8, y: 50 }}
-            transition={{ duration: 0.3 }}
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
-              <CheckCircle2 className="w-8 h-8 text-green-600" />
-            </div>
-            
-            <h3 className="text-2xl font-bold text-gray-800 mb-4">
-              تم استلام طلبك!
-            </h3>
-            
-            <p className="text-gray-600 mb-6 leading-relaxed">
-              سيتم التواصل قريباً معك عبر الواتساب
-            </p>
-            
-            <button
-              onClick={() => setShowSuccessPopup(false)}
-              className="w-full bg-green-600 hover:bg-green-700 text-white py-3 px-6 rounded-lg font-semibold transition-colors"
-            >
-              حسناً
-            </button>
-          </motion.div>
-        </motion.div>
-        )}
-      </AnimatePresence>
     </section>
   );
 };
