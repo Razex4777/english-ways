@@ -84,7 +84,7 @@ const ThankYou: React.FC = () => {
                 <span className="text-blue-600 font-bold text-sm">1</span>
               </div>
               <span className="text-gray-700 leading-relaxed">
-                سيتواصل معك فريقنا خلال 24 ساعة لتحديد موعد الجلسة المجانية
+                سيتواصل معك فريقنا خلال 24 ساعة لتحديد موعد الجلسة
               </span>
             </div>
 
