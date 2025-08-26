@@ -171,7 +171,7 @@ const ThankYou: React.FC = () => {
             onClick={() => setShowPaymentModal(false)}
           >
             <motion.div
-              className="bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-6 lg:p-8 max-w-sm sm:max-w-2xl lg:max-w-4xl w-full max-h-[90vh] overflow-y-auto relative z-[10000] shadow-2xl mx-auto"
+              className="bg-white rounded-xl sm:rounded-2xl lg:rounded-3xl p-3 sm:p-4 md:p-6 lg:p-8 max-w-[95vw] sm:max-w-lg md:max-w-2xl lg:max-w-4xl w-full max-h-[95vh] overflow-y-auto relative z-[10000] shadow-2xl mx-auto"
               initial={{ scale: 0.8, opacity: 0, y: 20 }}
               animate={{ scale: 1, opacity: 1, y: 0 }}
               exit={{ scale: 0.8, opacity: 0, y: 20 }}
@@ -187,13 +187,13 @@ const ThankYou: React.FC = () => {
               </button>
 
               {/* Modal Content */}
-              <div className="text-center mb-6 sm:mb-8">
-                <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-800 mb-2 sm:mb-3">اختر طريقة الدفع المناسبة لك</h2>
-                <p className="text-sm sm:text-base text-gray-600">حدد الطريقة التي تفضلها لإتمام عملية الدفع</p>
+              <div className="text-center mb-4 sm:mb-6 lg:mb-8">
+                <h2 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-gray-800 mb-2 sm:mb-3">اختر طريقة الدفع المناسبة لك</h2>
+                <p className="text-xs sm:text-sm md:text-base text-gray-600">حدد الطريقة التي تفضلها لإتمام عملية الدفع</p>
               </div>
 
               {/* Payment Options */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 sm:gap-4 md:gap-6">
                 {/* Online Payment Option */}
                 <motion.div
                   className="group"
@@ -205,16 +205,16 @@ const ThankYou: React.FC = () => {
                       window.open('https://pay.lahza.io/8cSWi-F63z', '_blank');
                       setShowPaymentModal(false);
                     }}
-                    className="w-full bg-gradient-to-r from-rose-500 via-pink-500 to-orange-500 text-white p-4 sm:p-6 lg:p-8 rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 min-h-[120px] sm:min-h-[140px] touch-manipulation"
+                    className="w-full bg-gradient-to-r from-rose-500 via-pink-500 to-orange-500 text-white p-3 sm:p-4 md:p-6 lg:p-8 rounded-xl sm:rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 min-h-[100px] sm:min-h-[120px] md:min-h-[140px] touch-manipulation"
                   >
-                    <div className="flex flex-col items-center gap-3 sm:gap-4">
-                      <div className="w-12 h-12 sm:w-16 sm:h-16 bg-white/20 rounded-full flex items-center justify-center">
-                        <CreditCard className="w-6 h-6 sm:w-8 sm:h-8" />
+                    <div className="flex flex-col items-center gap-2 sm:gap-3 md:gap-4">
+                      <div className="w-10 h-10 sm:w-12 sm:h-12 md:w-16 md:h-16 bg-white/20 rounded-full flex items-center justify-center">
+                        <CreditCard className="w-5 h-5 sm:w-6 sm:h-6 md:w-8 md:h-8" />
                       </div>
                       <div className="text-center">
-                        <h3 className="text-lg sm:text-xl lg:text-2xl font-bold mb-1 sm:mb-2">دفع إلكتروني</h3>
-                        <p className="text-white/90 text-sm sm:text-base lg:text-lg">فيزا / ماستركارد</p>
-                        <p className="text-white/80 text-xs sm:text-sm mt-1 sm:mt-2">دفع سريع وآمن عبر الإنترنت</p>
+                        <h3 className="text-base sm:text-lg md:text-xl lg:text-2xl font-bold mb-1">دفع إلكتروني</h3>
+                        <p className="text-white/90 text-sm sm:text-base md:text-lg">فيزا / ماستركارد</p>
+                        <p className="text-white/80 text-xs sm:text-sm md:text-base mt-1">دفع سريع وآمن عبر الإنترنت</p>
                       </div>
                     </div>
                     <div className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
@@ -227,25 +227,25 @@ const ThankYou: React.FC = () => {
                   whileHover={{ scale: 1.02 }}
                   transition={{ type: "spring", duration: 0.2 }}
                 >
-                  <div className="bg-gray-50 border-2 border-gray-200 p-4 sm:p-6 lg:p-8 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 h-full min-h-[120px] sm:min-h-[140px]">
-                    <div className="flex flex-col items-center gap-3 sm:gap-4 mb-4 sm:mb-6">
-                      <div className="w-12 h-12 sm:w-16 sm:h-16 bg-blue-100 rounded-full flex items-center justify-center">
-                        <Building2 className="w-6 h-6 sm:w-8 sm:h-8 text-blue-600" />
+                  <div className="bg-gray-50 border-2 border-gray-200 p-3 sm:p-4 md:p-6 lg:p-8 rounded-xl sm:rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 h-full min-h-[100px] sm:min-h-[120px] md:min-h-[140px]">
+                    <div className="flex flex-col items-center gap-2 sm:gap-3 md:gap-4 mb-3 sm:mb-4 md:mb-6">
+                      <div className="w-10 h-10 sm:w-12 sm:h-12 md:w-16 md:h-16 bg-blue-100 rounded-full flex items-center justify-center">
+                        <Building2 className="w-5 h-5 sm:w-6 sm:h-6 md:w-8 md:h-8 text-blue-600" />
                       </div>
                       <div className="text-center">
-                        <h3 className="text-lg sm:text-xl lg:text-2xl font-bold text-gray-800 mb-1 sm:mb-2">حوالة بنكية</h3>
+                        <h3 className="text-base sm:text-lg md:text-xl lg:text-2xl font-bold text-gray-800 mb-1">حوالة بنكية</h3>
                       </div>
                     </div>
                     
                     {/* Price Section with discount */}
-                    <div className="bg-rose-50 border border-rose-200 rounded-lg p-3 sm:p-4 mb-3 sm:mb-4 text-right">
-                      <div className="text-rose-700 font-semibold mb-1 sm:mb-2 text-sm sm:text-base">💰 سعر الدورة:</div>
+                    <div className="bg-rose-50 border border-rose-200 rounded-lg p-2 sm:p-3 md:p-4 mb-2 sm:mb-3 md:mb-4 text-right">
+                      <div className="text-rose-700 font-semibold mb-1 sm:mb-2 text-xs sm:text-sm md:text-base">💰 سعر الدورة:</div>
                       <div className="space-y-1 text-xs sm:text-sm">
                         <div className="text-rose-800">
                           <span className="font-semibold">السعر الأصلي:</span> 
                           <span className="line-through text-rose-500/80 decoration-rose-400/60 decoration-2">3300 شيقل</span>
                         </div>
-                        <div className="text-rose-900 text-sm sm:text-base lg:text-lg font-bold">
+                        <div className="text-rose-900 text-xs sm:text-sm md:text-base lg:text-lg font-bold">
                           <span>السعر بعد الخصم:</span> 
                           <span>2390 شيقل فقط</span>
                         </div>
@@ -253,7 +253,7 @@ const ThankYou: React.FC = () => {
                     </div>
 
                     {/* Bank Details */}
-                    <div className="bg-white rounded-lg p-3 sm:p-4 mb-3 sm:mb-4 text-right border">
+                    <div className="bg-white rounded-lg p-2 sm:p-3 md:p-4 mb-2 sm:mb-3 md:mb-4 text-right border">
                       <div className="space-y-1 sm:space-y-2 text-xs sm:text-sm">
                         <div><span className="font-semibold">رقم الحساب:</span> 256968</div>
                         <div><span className="font-semibold">رقم الفرع:</span> 632</div>
@@ -264,7 +264,7 @@ const ThankYou: React.FC = () => {
 
                     {/* WhatsApp Contact */}
                     <div className="bg-blue-50 border border-blue-200 rounded-lg p-2 sm:p-3 text-right">
-                      <p className="text-xs text-blue-800 leading-relaxed">
+                      <p className="text-xs leading-relaxed text-blue-800">
                         <span className="font-semibold">🔹 مهم:</span> بعد عمل الحوالة، أرسل صورة التحويل على رقم الواتساب:
                         <a
                           href="https://wa.me/972529435949"
