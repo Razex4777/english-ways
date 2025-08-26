@@ -79,31 +79,31 @@ const ThankYou: React.FC = () => {
           </div>
 
           <div className="space-y-4 text-right">
-            <div className="flex items-center gap-3 justify-end">
-              <span className="text-gray-700 leading-relaxed">
-                سيتواصل معك فريقنا خلال 24 ساعة لتحديد موعد الجلسة المجانية
-              </span>
+            <div className="flex items-center gap-3 justify-start">
               <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0">
                 <span className="text-blue-600 font-bold text-sm">1</span>
               </div>
+              <span className="text-gray-700 leading-relaxed">
+                سيتواصل معك فريقنا خلال 24 ساعة لتحديد موعد الجلسة المجانية
+              </span>
             </div>
 
-            <div className="flex items-center gap-3 justify-end">
-              <span className="text-gray-700 leading-relaxed">
-                ستحصل على تقييم مجاني لمستواك الحالي
-              </span>
+            <div className="flex items-center gap-3 justify-start">
               <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
                 <span className="text-green-600 font-bold text-sm">2</span>
               </div>
+              <span className="text-gray-700 leading-relaxed">
+                ستحصل على تقييم مجاني لمستواك الحالي
+              </span>
             </div>
 
-            <div className="flex items-center gap-3 justify-end">
-              <span className="text-gray-700 leading-relaxed">
-                خطة تعلم مخصصة تناسب أهدافك واحتياجاتك
-              </span>
+            <div className="flex items-center gap-3 justify-start">
               <div className="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center flex-shrink-0">
                 <span className="text-purple-600 font-bold text-sm">3</span>
               </div>
+              <span className="text-gray-700 leading-relaxed">
+                خطة تعلم مخصصة تناسب أهدافك واحتياجاتك
+              </span>
             </div>
           </div>
         </motion.div>
