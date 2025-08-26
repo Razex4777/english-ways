@@ -136,7 +136,7 @@ const ThankYou: React.FC = () => {
             className="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-rose-500 via-pink-500 to-orange-500 hover:from-rose-600 hover:via-pink-600 hover:to-orange-600 text-white font-semibold py-3 px-8 rounded-full transition-all duration-300 shadow-lg hover:shadow-xl"
           >
             <CreditCard className="w-5 h-5" />
-            ادفع الآن
+            ادفع الآن واحصل على خصم 30% مباشرة
           </button>
 
           <a
