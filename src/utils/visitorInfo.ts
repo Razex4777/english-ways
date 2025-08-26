@@ -1,15 +1,7 @@
 // Utility to get comprehensive visitor information
 interface VisitorInfo {
   ip: string;
-  location: {
-    country: string;
-    region: string;
-    city: string;
-    lat: string;
-    lon: string;
-    timezone: string;
-    isp: string;
-  };
+  location: LocationData;
   device: {
     userAgent: string;
     platform: string;
@@ -128,128 +120,223 @@ const getDeviceInfo = (): { deviceType: string; isMobile: boolean; isTablet: boo
   };
 };
 
-// Get IP and location information
-const getIPInfo = async (): Promise<{ ip: string; location: any }> => {
-  try {
-    // Try multiple free IP geolocation services (all HTTPS)
-    const services = [
-      'https://ipapi.co/json/',
-      'https://api.ipify.org?format=json',
-      'https://httpbin.org/ip'
-    ];
+// Interface for standardized location data
+interface LocationData {
+  country: string;
+  region: string;
+  city: string;
+  lat: string;
+  lon: string;
+  timezone: string;
+  isp: string;
+}
 
-    let ipData = null;
-    let locationData = null;
+// Interface for IP service configuration
+interface IPService {
+  name: string;
+  url: string;
+  parser: (data: any) => { ip: string; location: LocationData };
+}
 
-    // Try the first service (ipapi.co - comprehensive with HTTPS)
+// High-quality IP geolocation services (based on research)
+const IP_SERVICES: IPService[] = [
+  {
+    name: 'IPGeolocation.io',
+    url: 'https://api.ipgeolocation.io/ipgeo?apiKey=',
+    parser: (data) => ({
+      ip: data.ip,
+      location: {
+        country: data.country_name || 'Unknown',
+        region: data.state_prov || data.district || 'Unknown',
+        city: data.city || 'Unknown',
+        lat: data.latitude?.toString() || '0',
+        lon: data.longitude?.toString() || '0',
+        timezone: data.time_zone?.name || 'Unknown',
+        isp: data.isp || 'Unknown'
+      }
+    })
+  },
+  {
+    name: 'Abstract API',
+    url: 'https://ipgeolocation.abstractapi.com/v1/?api_key=',
+    parser: (data) => ({
+      ip: data.ip_address,
+      location: {
+        country: data.country || 'Unknown',
+        region: data.region || 'Unknown',
+        city: data.city || 'Unknown',
+        lat: data.latitude?.toString() || '0',
+        lon: data.longitude?.toString() || '0',
+        timezone: data.timezone?.name || 'Unknown',
+        isp: data.connection?.organization_name || 'Unknown'
+      }
+    })
+  },
+  {
+    name: 'IPapi.co',
+    url: 'https://ipapi.co/json/',
+    parser: (data) => ({
+      ip: data.ip,
+      location: {
+        country: data.country_name || data.country || 'Unknown',
+        region: data.region || 'Unknown',
+        city: data.city || 'Unknown',
+        lat: data.latitude?.toString() || '0',
+        lon: data.longitude?.toString() || '0',
+        timezone: data.timezone || 'Unknown',
+        isp: data.org || 'Unknown'
+      }
+    })
+  },
+  {
+    name: 'IPinfo.io',
+    url: 'https://ipinfo.io/json?token=',
+    parser: (data) => ({
+      ip: data.ip,
+      location: {
+        country: data.country || 'Unknown',
+        region: data.region || 'Unknown',
+        city: data.city || 'Unknown',
+        lat: data.loc?.split(',')[0] || '0',
+        lon: data.loc?.split(',')[1] || '0',
+        timezone: data.timezone || 'Unknown',
+        isp: data.org || 'Unknown'
+      }
+    })
+  },
+  {
+    name: 'IP-API.com',
+    url: 'https://ip-api.com/json/',
+    parser: (data) => ({
+      ip: data.query,
+      location: {
+        country: data.country || 'Unknown',
+        region: data.regionName || 'Unknown',
+        city: data.city || 'Unknown',
+        lat: data.lat?.toString() || '0',
+        lon: data.lon?.toString() || '0',
+        timezone: data.timezone || 'Unknown',
+        isp: data.isp || 'Unknown'
+      }
+    })
+  }
+];
+
+// Fallback IP-only services
+const FALLBACK_IP_SERVICES = [
+  'https://api.ipify.org?format=json',
+  'https://httpbin.org/ip',
+  'https://icanhazip.com',
+  'https://ident.me'
+];
+
+// Get IP and location information with comprehensive fallback
+const getIPInfo = async (): Promise<{ ip: string; location: LocationData }> => {
+  console.log('🔍 Starting comprehensive IP geolocation lookup...');
+  
+  // Try high-quality geolocation services first
+  for (const service of IP_SERVICES) {
     try {
-      const response = await fetch(services[0], {
+      console.log(`🌐 Trying ${service.name}...`);
+      
+      const response = await fetch(service.url, {
         method: 'GET',
         headers: {
           'Accept': 'application/json',
-        }
+          'User-Agent': 'Mozilla/5.0 (compatible; LocationService/1.0)'
+        },
+        signal: AbortSignal.timeout(10000) // 10 second timeout
       });
 
       if (response.ok) {
         const data = await response.json();
-        ipData = data.ip;
-        locationData = {
-          country: data.country_name || data.country || 'Unknown',
-          region: data.region || 'Unknown',
-          city: data.city || 'Unknown',
-          lat: data.latitude?.toString() || '0',
-          lon: data.longitude?.toString() || '0',
-          timezone: data.timezone || 'Unknown',
-          isp: data.org || 'Unknown'
-        };
+        console.log(`✅ ${service.name} response:`, data);
+        
+        // Check if we got valid data
+        if (data && (data.ip || data.query || data.ip_address)) {
+          const result = service.parser(data);
+          
+          // Validate the result has meaningful data
+          if (result.ip && result.ip !== 'Unknown' && 
+              result.location.country !== 'Unknown' && 
+              result.location.country !== '') {
+            console.log(`🎯 Successfully got location from ${service.name}:`, result);
+            return result;
+          }
+        }
+      } else {
+        console.log(`❌ ${service.name} returned status: ${response.status}`);
       }
     } catch (error) {
-      console.log('First IP service failed, trying backup...');
+      console.log(`⚠️ ${service.name} failed:`, error);
     }
-
-    // If first service failed, try ipify.org (IP only)
-    if (!ipData) {
-      try {
-        const response = await fetch(services[1], {
-          method: 'GET',
-          headers: {
-            'Accept': 'application/json',
-          }
-        });
-
-        if (response.ok) {
-          const data = await response.json();
-          ipData = data.ip;
-          locationData = {
-            country: 'Unknown',
-            region: 'Unknown',
-            city: 'Unknown',
-            lat: '0',
-            lon: '0',
-            timezone: 'Unknown',
-            isp: 'Unknown'
-          };
-        }
-      } catch (error) {
-        console.log('Second IP service failed, trying final backup...');
-      }
-    }
-
-    // If all else fails, try httpbin.org
-    if (!ipData) {
-      try {
-        const response = await fetch(services[2]);
-        if (response.ok) {
-          const data = await response.json();
-          ipData = data.origin; // httpbin.org returns IP in 'origin' field
-          locationData = {
-            country: 'Unknown',
-            region: 'Unknown',
-            city: 'Unknown',
-            lat: '0',
-            lon: '0',
-            timezone: 'Unknown',
-            isp: 'Unknown'
-          };
-        }
-      } catch (error) {
-        console.error('All IP services failed:', error);
-        ipData = 'Unknown';
-        locationData = {
-          country: 'Unknown',
-          region: 'Unknown',
-          city: 'Unknown',
-          lat: '0',
-          lon: '0',
-          timezone: 'Unknown',
-          isp: 'Unknown'
-        };
-      }
-    }
-
-    return { ip: ipData, location: locationData };
-  } catch (error) {
-    console.error('Error getting IP info:', error);
-    return {
-      ip: 'Unknown',
-      location: {
-        country: 'Unknown',
-        region: 'Unknown',
-        city: 'Unknown',
-        lat: '0',
-        lon: '0',
-        timezone: 'Unknown',
-        isp: 'Unknown'
-      }
-    };
   }
+
+  console.log('🔄 All geolocation services failed, trying IP-only fallbacks...');
+  
+  // If all geolocation services fail, try to at least get the IP
+  let fallbackIP = 'Unknown';
+  
+  for (const fallbackUrl of FALLBACK_IP_SERVICES) {
+    try {
+      console.log(`🔍 Trying fallback: ${fallbackUrl}`);
+      
+      const response = await fetch(fallbackUrl, {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/json',
+        },
+        signal: AbortSignal.timeout(5000) // 5 second timeout
+      });
+
+      if (response.ok) {
+        const text = await response.text();
+        let data;
+        
+        try {
+          data = JSON.parse(text);
+          fallbackIP = data.ip || data.origin || 'Unknown';
+        } catch {
+          // Plain text response
+          fallbackIP = text.trim();
+        }
+        
+        if (fallbackIP && fallbackIP !== 'Unknown') {
+          console.log(`✅ Got IP from fallback: ${fallbackIP}`);
+          break;
+        }
+      }
+    } catch (error) {
+      console.log(`⚠️ Fallback ${fallbackUrl} failed:`, error);
+    }
+  }
+
+  // Return with fallback data
+  const fallbackResult = {
+    ip: fallbackIP,
+    location: {
+      country: 'Unknown',
+      region: 'Unknown', 
+      city: 'Unknown',
+      lat: '0',
+      lon: '0',
+      timezone: 'Unknown',
+      isp: 'Unknown'
+    }
+  };
+  
+  console.log('📍 Final result (with fallbacks):', fallbackResult);
+  return fallbackResult;
 };
 
 // Main function to get all visitor information
 export const getVisitorInfo = async (): Promise<VisitorInfo> => {
   try {
+    console.log('🚀 [VisitorInfo] Starting comprehensive visitor information collection...');
+    
     // Get IP and location info
     const { ip, location } = await getIPInfo();
+    console.log('🌍 [VisitorInfo] Location data obtained:', { ip, location });
 
     // Get browser info
     const { browser, version: browserVersion } = getBrowserInfo();
@@ -267,15 +354,7 @@ export const getVisitorInfo = async (): Promise<VisitorInfo> => {
 
     const visitorInfo: VisitorInfo = {
       ip,
-      location: {
-        country: location.country,
-        region: location.region,
-        city: location.city,
-        lat: location.lat,
-        lon: location.lon,
-        timezone: location.timezone,
-        isp: location.isp
-      },
+      location,
       device: {
         userAgent: navigator.userAgent,
         platform: navigator.platform,
@@ -297,20 +376,24 @@ export const getVisitorInfo = async (): Promise<VisitorInfo> => {
       mapUrl
     };
 
+    console.log('✅ [VisitorInfo] Complete visitor information collected:', visitorInfo);
     return visitorInfo;
   } catch (error) {
     console.error('Error getting visitor info:', error);
+    
+    const fallbackLocation: LocationData = {
+      country: 'Unknown',
+      region: 'Unknown',
+      city: 'Unknown',
+      lat: '0',
+      lon: '0',
+      timezone: 'Unknown',
+      isp: 'Unknown'
+    };
+    
     return {
       ip: 'Unknown',
-      location: {
-        country: 'Unknown',
-        region: 'Unknown',
-        city: 'Unknown',
-        lat: '0',
-        lon: '0',
-        timezone: 'Unknown',
-        isp: 'Unknown'
-      },
+      location: fallbackLocation,
       device: {
         userAgent: navigator.userAgent,
         platform: navigator.platform,
